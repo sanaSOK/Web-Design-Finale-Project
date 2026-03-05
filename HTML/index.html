@@ -9,7 +9,7 @@
     <style>
         /* Basic Resets */
         body, html {
-            margin: 0;
+            margin: 0;ff
             padding: 0;
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -509,6 +509,14 @@
             transform: translateY(-15px);
         }
 
+        .product-details {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
         .product-image {
             width: 100%;
             height: 180px;
@@ -545,7 +553,7 @@
             align-items: center;
         }
 
-        .info-icon {
+        .wishlist-icon {
             width: 16px;
             height: 16px;
             margin-left: 5px;
@@ -598,7 +606,9 @@
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.3s ease;
-            width: 90%;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .add-to-cart-btn:hover {
@@ -722,6 +732,127 @@
             visibility: hidden;
             opacity: 0;
             transition: visibility 0.3s, opacity 0.3s;
+        }
+
+        /* QR Overlay (card style like attached image) */
+        .qr-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.25s, opacity 0.25s;
+        }
+
+        .qr-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .qr-card {
+            background-color: #fff;
+            width: 360px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            font-family: inherit;
+            position: relative;
+        }
+
+        .qr-card-header {
+            background: #d81b1b; /* red header like example */
+            color: #fff;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+        }
+
+        .qr-card-body {
+            padding: 18px 20px 24px 20px;
+            text-align: center;
+        }
+
+        .qr-merchant {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 6px;
+        }
+
+        .qr-amount {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #111;
+            margin: 6px 0 12px 0;
+        }
+
+        .qr-separator {
+            border-top: 2px dashed #ddd;
+            margin: 12px 0 16px 0;
+        }
+
+        .qr-image-wrap {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto;
+            border-radius: 6px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-image-wrap img.qr-code {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* center logo overlay (small red circular badge) */
+        .qr-center-badge {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #d81b1b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .qr-center-badge img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            filter: brightness(10) invert(1);
+        }
+
+        .qr-card-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         .cart-overlay.active {
@@ -1533,6 +1664,55 @@
         }
         /* --- END OF PROFILE-RELATED CSS --- */
 
+        /* Add Product Modal Styles */
+        .admin-add-product-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+        }
+
+        .admin-add-product-overlay.active { display: flex; }
+
+        .admin-add-product-modal {
+            background: #fff;
+            width: 460px;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        .admin-add-product-header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:12px 16px;
+            border-bottom:1px solid #eee;
+            background:#f7f3ed;
+        }
+
+        .admin-add-product-header h3 { margin:0;color:#3f2a1d }
+
+        #addProductForm input[type="text"],
+        #addProductForm input[type="number"],
+        #addProductForm textarea, #addProductForm select {
+            width:100%;
+            padding:8px 10px;
+            border:1px solid #ddd;
+            border-radius:4px;
+            box-sizing:border-box;
+            font-size:0.95rem;
+        }
+
+        #addProductForm label { font-size:0.9rem; color:#444; display:block; }
+
+
         /* Responsive Navigation */
         .main-nav button[aria-controls="navbar-sticky"] {
         display: none;
@@ -1644,6 +1824,49 @@
             }
         }
 
+        /* Discount marquee bar */
+        .discount-bar {
+            position: fixed;
+            top: 64px; /* below fixed header */
+            left: 0;
+            width: 100%;
+            background: #fff9f0;
+            border-bottom: 1px solid #f0e0d0;
+            z-index: 999;
+            overflow: hidden;
+            padding: 8px 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+        }
+
+        .discount-track {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            white-space: nowrap;
+            will-change: transform;
+            /* animation duration set by JS based on content width */
+            animation-name: marqueeScroll;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .discount-item {
+            display: inline-block;
+            padding: 6px 12px;
+            font-weight: 700;
+            color: #d81b1b;
+            font-size: 0.95rem;
+        }
+
+        .discount-bar:hover .discount-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
     </style>
 </head>
 <body>
@@ -1674,7 +1897,7 @@
                     <ul>
                         <li id="myProfileLink"><i class="fas fa-user-circle"></i> My Profile</li>
                         <li><i class="fas fa-box"></i> My Orders</li>
-                        <li><i class="fas fa-heart"></i> Wishlist</li>
+                        <li><a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a></li>
                         <li id="adminPanelLink"><i class="fas fa-cog"></i> Admin Panel</li>
                         <li id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</li>
                     </ul>
@@ -1688,6 +1911,21 @@
             </button>
         </div>
     </header>
+
+    <!-- Discount marquee bar (auto-scrolling, looped) -->
+    <div class="discount-bar" id="discountBar" aria-hidden="false">
+        <div class="discount-track" id="discountTrack">
+            <div class="discount-item">20% OFF all Frappes — Use code FRAP20</div>
+            <div class="discount-item">Buy 1 Get 1 Free on Hot Coffees Today!</div>
+            <div class="discount-item">Free delivery over $15</div>
+            <div class="discount-item">New: Iced Caramel Macchiato - 10% off</div>
+            <!-- duplicate items for seamless loop -->
+            <div class="discount-item">20% OFF all Frappes — Use code FRAP20</div>
+            <div class="discount-item">Buy 1 Get 1 Free on Hot Coffees Today!</div>
+            <div class="discount-item">Free delivery over $15</div>
+            <div class="discount-item">New: Iced Caramel Macchiato - 10% off</div>
+        </div>
+    </div>
 
     <section class="hero-section" id="home">
         <div class="hero-image-container">
@@ -1744,13 +1982,14 @@
             <p>Have questions about our coffee or want to place a bulk order? Reach out to us and we'll be happy to help.</p>
             <div class="contact-details">
                 <p><i class="fas fa-map-marker-alt"></i> Address: 123 Coffee Street, Brewville, CA 94123</p>
-                <p><i class="fas fa-envelope"></i> Email: info@brewhaven.com</p>
+                <p><i class="fas fa-envelope"></i> Email: soksana@gmail.com</p>
                 <p><i class="fas fa-phone"></i> Phone: (555) 123-4567</p>
             </div>
             <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@NAAKIO-nj9of"><i class="fab fa-youtube"></i></a>
+                <a href="https://github.com/sanaSOK/Web-Design-Finale-Project.git"><i class="fab fa-github"></i></a>
             </div>
         </div>
         <div class="contact-form-container">
@@ -1779,7 +2018,55 @@
                     <span>Subtotal:</span>
                     <span id="cartSubtotal">$0.00</span>
                 </div>
-                <button class="proceed-to-checkout-btn">Proceed to Checkout</button>
+                <button id="proceedToCheckoutBtn" class="proceed-to-checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+            <!-- Add Product Modal -->
+            <div class="admin-add-product-overlay" id="adminAddProductOverlay" aria-hidden="true">
+                <div class="admin-add-product-modal">
+                    <div class="admin-add-product-header">
+                        <h3>Add New Product</h3>
+                        <button id="closeAddProductBtn" class="close-btn">&times;</button>
+                    </div>
+                    <form id="addProductForm" style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+                        <label>Product Name<input type="text" id="newProductName" placeholder="Name" required></label>
+                        <label>Category
+                            <select id="newProductCategory">
+                            </select>
+                        </label>
+                        <label>Price<input type="number" step="0.01" id="newProductPrice" placeholder="0.00" required></label>
+                        <label>Stock<input type="number" id="newProductStock" placeholder="0" required></label>
+                        <label>Image Path<input type="text" id="newProductImage" placeholder="../image/your-image.png"></label>
+                        <label>Description<textarea id="newProductDescription" placeholder="Short description"></textarea></label>
+                        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+                            <button type="button" id="cancelAddProduct" class="add-new-product-btn" style="background:#777;">Cancel</button>
+                            <button type="submit" id="submitAddProduct" class="add-new-product-btn">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+    <!-- QR Overlay for checkout (card style) -->
+    <div class="qr-overlay" id="qrOverlay">
+        <div class="qr-card" role="dialog" aria-modal="true" aria-labelledby="qrMerchantName">
+            <div class="qr-card-header">
+                <button id="closeQrBtn" class="qr-card-close">&times;</button>
+                <span>KHQR</span>
+            </div>
+            <div class="qr-card-body">
+                <div id="qrMerchantName" class="qr-merchant">SANA SOK</div>
+                <div id="qrAmountLarge" class="qr-amount">0</div>
+                <div class="qr-separator"></div>
+
+                <div class="qr-image-wrap">
+                    <img id="qrImage" class="qr-code" src="" alt="QR Code">
+                    <div class="qr-center-badge" id="qrCenterBadge">
+                        <img id="qrCenterLogo" src="../image/qr.png" alt="QR">
+                    </div>
+                </div>
+
+                <p style="margin-top:12px;color:#777;font-size:0.95rem;">Open your banking app and scan this code to pay</p>
             </div>
         </div>
     </div>
@@ -1823,7 +2110,7 @@
 
             <div id="productsTabContent" class="tab-content active">
                 <h4>Manage Products</h4>
-                <button class="add-new-product-btn"> Add New Product</button>
+                <button id="adminAddProductBtn" class="add-new-product-btn"> Add New Product</button>
                 <table>
                     <thead>
                         <tr>
@@ -1964,7 +2251,7 @@
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Email</span>
-                    <span class="detail-value">SanA.Sok@example.com</span>
+                    <span class="detail-value">Sana.Sok@gmail.com</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Phone</span>
@@ -1995,16 +2282,16 @@
                     <i class="fas fa-globe"></i> <span>Website: <a href="https://example.com" target="_blank">example.com</a></span>
                 </div>
                 <div class="social-link-item">
-                    <i class="fab fa-github"></i> <span>Github: <a href="#" target="_blank">soksana_git</a></span>
+                    <i class="fab fa-github"></i> <span>Github: <a href="https://github.com/sanaSOK/Web-Design-Finale-Project.git" target="_blank">soksana_git</a></span>
                 </div>
                 <div class="social-link-item">
-                    <i class="fab fa-twitter"></i> <span>Twitter: <a href="#" target="_blank">@soksana_tw</a></span>
+                    <i class="fab fa-youtube"></i> <span>YouTube: <a href="https://www.youtube.com/@NAAKIO-nj9of" target="_blank">soksana_youtube</a></span>
                 </div>
                 <div class="social-link-item">
-                    <i class="fab fa-instagram"></i> <span>Instagram: <a href="#" target="_blank">@soksana_ig</a></span>
+                    <i class="fab fa-instagram"></i> <span>Instagram: <a href="https://www.instagram.com/soksana_ig" target="_blank">@soksana_ig</a></span>
                 </div>
                 <div class="social-link-item">
-                    <i class="fab fa-facebook-f"></i> <span>Facebook: <a href="#" target="_blank">soksana_fb</a></span>
+                    <i class="fab fa-facebook-f"></i> <span>Facebook: <a href="https://www.facebook.com/soksana_fb" target="_blank">soksana_fb</a></span>
                 </div>
             </div>
 
@@ -2097,6 +2384,16 @@
 
 
         let cart = []; // This will store items added to the cart
+        // Persist cart to localStorage so other pages (wishlist) can add items
+        function saveCartToStorage(){
+            try{ localStorage.setItem('cart', JSON.stringify(cart || [])); }catch(e){ /* ignore */ }
+        }
+
+        function loadCartFromStorage(){
+            try{ const stored = JSON.parse(localStorage.getItem('cart') || '[]'); cart = Array.isArray(stored) ? stored : []; }catch(e){ cart = []; }
+            updateCartDisplay();
+        }
+        let editingProductId = null; // id when editing an existing product in admin
 
         // Get DOM elements for cart functionality
         const cartIcon = document.getElementById('cartIcon');
@@ -2178,7 +2475,7 @@
                             <h4 class="product-name">${product.name}</h4>
                             ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
                             <p class="product-price">$${product.price.toFixed(2)}
-                                <img src="../image/info icon.png" alt="info" class="info-icon">
+                                <img src="../image/favorite.png" alt="wishlist" class="wishlist-icon" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="../images/${product.image}">
                             </p>
                             <div class="quantity-control">
                                 <button class="quantity-btn decrease-qty" data-id="${product.id}">-</button>
@@ -2223,6 +2520,32 @@
                     }
                 });
             });
+
+            // Wishlist icon click: add item to localStorage wishlist and navigate to wishlist page
+            document.querySelectorAll('.wishlist-icon').forEach(icon => {
+                icon.addEventListener('click', (event) => {
+                    const id = parseInt(icon.dataset.id);
+                    const name = icon.dataset.name || '';
+                    const price = parseFloat(icon.dataset.price) || 0;
+                    const image = icon.dataset.image || '';
+
+                    const wishlistKey = 'wishlist';
+                    let wishlist = [];
+                    try {
+                        wishlist = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+                    } catch (err) {
+                        wishlist = [];
+                    }
+
+                    if (!wishlist.find(item => item.id === id)) {
+                        wishlist.push({ id, name, price, image });
+                        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+                    }
+
+                    // Go to wishlist page to show saved items
+                    window.location.href = 'wishlist.html';
+                });
+            });
         }
         // function for send message
         function submitContactForm(event) {
@@ -2260,6 +2583,7 @@
                     cart.push({ ...productToAdd, quantity: quantity });
                 }
                 updateCartDisplay();
+                saveCartToStorage();
                 openCart();
             }
         }
@@ -2268,6 +2592,7 @@
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             updateCartDisplay();
+            saveCartToStorage();
         }
 
         // Function to update cart display (items and subtotal)
@@ -2383,12 +2708,119 @@
                     <td>$${product.price.toFixed(2)}</td>
                     <td><span class="stock-status ${stockStatus}">${stockText}</span></td>
                     <td class="product-actions">
-                        <img src="../image/edit.png" alt="Edit" title="Edit Product"/>
-                        <img src="../image/delete.png" alt="Delete" title="Delete Product"/>
+                        <button class="admin-edit-btn" data-id="${product.id}" title="Edit Product" style="background:none;border:none;cursor:pointer;padding:4px;"><img src="../image/edit.png" alt="Edit"/></button>
+                        <button class="admin-delete-btn" data-id="${product.id}" title="Delete Product" style="background:none;border:none;cursor:pointer;padding:4px;"><img src="../image/delete.png" alt="Delete"/></button>
                     </td>
                 `;
                 adminProductTableBody.appendChild(row);
             });
+            // attach edit/delete listeners
+            document.querySelectorAll('.admin-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    if (Number.isInteger(id)) deleteProductById(id);
+                });
+            });
+            document.querySelectorAll('.admin-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    if (Number.isInteger(id)) openEditProductModal(id);
+                });
+            });
+        }
+
+        // Add product helper: adds product to productCategories and updates UI
+        function addNewProductToData(newProduct) {
+            if (!newProduct || !newProduct.name) return;
+            // ensure category exists
+            if (!productCategories[newProduct.category]) {
+                productCategories[newProduct.category] = [];
+            }
+            productCategories[newProduct.category].push(newProduct);
+            // re-render both product list and admin products
+            renderProducts();
+            renderAdminProducts();
+            updateCartDisplay();
+        }
+
+        // Delete product by id
+        function deleteProductById(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            for (const cat in productCategories) {
+                const idx = productCategories[cat].findIndex(p => p.id === id);
+                if (idx > -1) {
+                    productCategories[cat].splice(idx, 1);
+                    // if category becomes empty remove it
+                    if (productCategories[cat].length === 0) delete productCategories[cat];
+                    break;
+                }
+            }
+            renderProducts();
+            renderAdminProducts();
+        }
+
+        // Open edit modal for product
+        function openEditProductModal(id) {
+            // find product and its category
+            let found = null;
+            let foundCategory = null;
+            for (const cat in productCategories) {
+                const p = productCategories[cat].find(x => x.id === id);
+                if (p) { found = p; foundCategory = cat; break; }
+            }
+            if (!found) return;
+            editingProductId = id;
+            // populate fields
+            document.getElementById('newProductName').value = found.name || '';
+            // populate categories then set value
+            const sel = document.getElementById('newProductCategory');
+            if (sel) {
+                sel.innerHTML = '';
+                Object.keys(productCategories).forEach(cat => {
+                    const opt = document.createElement('option'); opt.value = cat; opt.textContent = cat; sel.appendChild(opt);
+                });
+                // if foundCategory not in list (shouldn't happen), add it
+                if (!Object.keys(productCategories).includes(foundCategory)) {
+                    const opt = document.createElement('option'); opt.value = foundCategory; opt.textContent = foundCategory; sel.appendChild(opt);
+                }
+                sel.value = foundCategory;
+            }
+            document.getElementById('newProductPrice').value = found.price || 0;
+            document.getElementById('newProductStock').value = found.stock || 0;
+            document.getElementById('newProductImage').value = found.image || '';
+            document.getElementById('newProductDescription').value = found.description || '';
+
+            // change header and submit text
+            const hdr = document.querySelector('.admin-add-product-header h3'); if (hdr) hdr.textContent = 'Edit Product';
+            const submitBtn = document.getElementById('submitAddProduct'); if (submitBtn) submitBtn.textContent = 'Save Changes';
+
+            if (adminAddProductOverlay) adminAddProductOverlay.classList.add('active');
+        }
+
+        // Update existing product data
+        function updateExistingProduct(id, updated) {
+            // find category and index
+            let currentCategory = null;
+            let index = -1;
+            for (const cat in productCategories) {
+                const idx = productCategories[cat].findIndex(p => p.id === id);
+                if (idx > -1) { currentCategory = cat; index = idx; break; }
+            }
+            if (currentCategory === null) return;
+            // if category changed, remove from old and push to new
+            if (updated.category && updated.category !== currentCategory) {
+                const item = productCategories[currentCategory].splice(index,1)[0];
+                if (!productCategories[updated.category]) productCategories[updated.category] = [];
+                const newItem = Object.assign(item, updated);
+                productCategories[updated.category].push(newItem);
+                // remove old category if empty
+                if (productCategories[currentCategory].length === 0) delete productCategories[currentCategory];
+            } else {
+                // update in place
+                const item = productCategories[currentCategory][index];
+                productCategories[currentCategory][index] = Object.assign(item, updated);
+            }
+            renderProducts(); renderAdminProducts();
         }
 
         function renderAdminOrders() {
@@ -2506,7 +2938,7 @@
                                 <h4 class="product-name">${product.name}</h4>
                                 ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
                                 <p class="product-price">$${product.price.toFixed(2)}
-                                    <img src="../image/info icon.png" alt="info" class="info-icon">
+                                    <img src="../image/favorite.png" alt="wishlist" class="wishlist-icon" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="../images/${product.image}">
                                 </p>
                                 <div class="quantity-control">
                                     <button class="quantity-btn decrease-qty" data-id="${product.id}">-</button>
@@ -2557,7 +2989,7 @@
                                 <h4 class="product-name">${product.name}</h4>
                                 ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
                                 <p class="product-price">$${product.price.toFixed(2)}
-                                    <img src="../image/info icon.png" alt="info" class="info-icon">
+                                    <img src="../image/favorite.png" alt="wishlist" class="wishlist-icon" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="../image/${product.image}">
                                 </p>
                                 <div class="quantity-control">
                                     <button class="quantity-btn decrease-qty" data-id="${product.id}">-</button>
@@ -2629,6 +3061,8 @@
 
             cartIcon.addEventListener('click', openCart);
             closeCartBtn.addEventListener('click', closeCart);
+            // Load persisted cart from localStorage (so wishlist additions persist)
+            loadCartFromStorage();
             cartOverlay.addEventListener('click', (event) => {
                 if (event.target === cartOverlay) {
                     closeCart();
@@ -2667,6 +3101,75 @@
             });
             // --- END OF PROFILE-RELATED EVENT LISTENERS ---
 
+            // --- Add Product Modal Event Listeners ---
+            const adminAddProductBtn = document.getElementById('adminAddProductBtn');
+            const adminAddProductOverlay = document.getElementById('adminAddProductOverlay');
+            const closeAddProductBtn = document.getElementById('closeAddProductBtn');
+            const cancelAddProduct = document.getElementById('cancelAddProduct');
+            const addProductForm = document.getElementById('addProductForm');
+            const newProductCategory = document.getElementById('newProductCategory');
+
+            function openAddProductModal() {
+                // populate category select with current categories
+                if (newProductCategory) {
+                    newProductCategory.innerHTML = '';
+                    Object.keys(productCategories).forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat;
+                        opt.textContent = cat;
+                        newProductCategory.appendChild(opt);
+                    });
+                }
+                if (adminAddProductOverlay) adminAddProductOverlay.classList.add('active');
+            }
+
+            function closeAddProductModal() {
+                if (adminAddProductOverlay) adminAddProductOverlay.classList.remove('active');
+                if (addProductForm) addProductForm.reset();
+            }
+
+            if (adminAddProductBtn) adminAddProductBtn.addEventListener('click', (e) => { e.preventDefault(); openAddProductModal();});
+            if (closeAddProductBtn) closeAddProductBtn.addEventListener('click', closeAddProductModal);
+            if (cancelAddProduct) cancelAddProduct.addEventListener('click', closeAddProductModal);
+            if (adminAddProductOverlay) adminAddProductOverlay.addEventListener('click', (e) => { if (e.target === adminAddProductOverlay) closeAddProductModal(); });
+
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('newProductName').value.trim();
+                    const category = document.getElementById('newProductCategory').value.trim();
+                    const price = parseFloat(document.getElementById('newProductPrice').value) || 0;
+                    const stock = parseInt(document.getElementById('newProductStock').value) || 0;
+                    const image = document.getElementById('newProductImage').value.trim() || '../image/default.png';
+                    const description = document.getElementById('newProductDescription').value.trim() || '';
+
+                    if (!name || !category) { alert('Please enter both name and category'); return; }
+
+                    // If editing, update existing product
+                    if (editingProductId) {
+                        const updated = { name, price, image, description, stock, category };
+                        updateExistingProduct(editingProductId, updated);
+                        editingProductId = null;
+                        // reset header/submit text
+                        const hdr = document.querySelector('.admin-add-product-header h3'); if (hdr) hdr.textContent = 'Add New Product';
+                        const submitBtn = document.getElementById('submitAddProduct'); if (submitBtn) submitBtn.textContent = 'Add Product';
+                        closeAddProductModal();
+                        return;
+                    }
+
+                    // compute new unique id
+                    const allProducts = Object.values(productCategories).flat();
+                    let maxId = 0;
+                    allProducts.forEach(p => { if (p.id && p.id > maxId) maxId = p.id; });
+                    const newId = maxId + 1;
+
+                    const newProduct = { id: newId, name, price, image, description, stock, category };
+                    addNewProductToData(newProduct);
+                    closeAddProductModal();
+                });
+            }
+            // --- End Add Product Modal Event Listeners ---
+
             logoutLink.addEventListener('click', (event) => {
                 event.preventDefault();
                 window.location.href = 'index1.html';
@@ -2699,6 +3202,97 @@
                     closeSearch();
                 }
             });
+
+            // QR / Checkout functionality (card style)
+            const proceedToCheckoutBtn = document.getElementById('proceedToCheckoutBtn');
+            const qrOverlay = document.getElementById('qrOverlay');
+            const qrImage = document.getElementById('qrImage');
+            const qrMerchantNameEl = document.getElementById('qrMerchantName');
+            const qrAmountLargeEl = document.getElementById('qrAmountLarge');
+            const qrCenterLogo = document.getElementById('qrCenterLogo');
+            const qrCenterBadge = document.getElementById('qrCenterBadge');
+            const closeQrBtn = document.getElementById('closeQrBtn') || document.getElementById('closeQrBtn');
+
+            // Merchant/config values (customize if needed)
+            const merchantDisplayName = 'SANA SOK';
+            const merchantLogoPath = '../image/logo.png';
+
+            function openQrOverlay(amount) {
+                // Build simple payment payload — replace with real payment URI if you have one
+                const payload = `Pay ${amount} to ${merchantDisplayName}`;
+                const data = encodeURIComponent(payload);
+                // Generated fallback QR image
+                const generatedSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${data}`;
+
+                // Path to a custom QR image you can drop into your project
+                const customQrPath = '../image/qr.png';
+
+                // Try to load custom QR first; if it fails, fall back to generated QR
+                if (qrImage) {
+                    // set merchant and amount first
+                    if (qrMerchantNameEl) qrMerchantNameEl.textContent = merchantDisplayName;
+                    if (qrAmountLargeEl) qrAmountLargeEl.textContent = amount;
+                    if (qrCenterLogo) qrCenterLogo.src = merchantLogoPath;
+                    if (qrCenterBadge) qrCenterBadge.style.display = 'flex';
+
+                    // attempt to load local custom image; onerror will switch to generated
+                    qrImage.onerror = () => {
+                        qrImage.onerror = null; // prevent loop
+                        qrImage.src = generatedSrc;
+                    };
+                    qrImage.src = customQrPath;
+                    // If custom loads successfully, onload keeps it. If not, onerror replaces it.
+                }
+
+                qrOverlay.classList.add('active');
+            }
+
+            function closeQrOverlay() {
+                qrOverlay.classList.remove('active');
+            }
+
+            if (proceedToCheckoutBtn) {
+                proceedToCheckoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const subtotalText = cartSubtotalElement.textContent.replace('$','').trim();
+                    const amount = parseFloat(subtotalText) || 0;
+                    if (amount <= 0) {
+                        alert('Your cart is empty. Add items before checkout.');
+                        return;
+                    }
+                    openQrOverlay(amount.toFixed(2));
+                });
+            }
+
+            if (closeQrBtn) closeQrBtn.addEventListener('click', closeQrOverlay);
+            if (qrOverlay) {
+                qrOverlay.addEventListener('click', (event) => {
+                    if (event.target === qrOverlay) closeQrOverlay();
+                });
+            }
+
+            // Initialize the products and cart display
+            // --- start: configure discount marquee speed ---
+            (function setupDiscountMarquee(){
+                const track = document.getElementById('discountTrack');
+                const bar = document.getElementById('discountBar');
+                if (!track || !bar) return;
+
+                function setDuration(){
+                    // track.scrollWidth is double because items are duplicated
+                    const trackWidth = track.scrollWidth / 2 || 500;
+                    const pixelsPerSecond = 80; // adjust speed here (higher = faster)
+                    const duration = Math.max(8, trackWidth / pixelsPerSecond);
+                    track.style.animationDuration = duration + 's';
+                }
+
+                // Recompute on load and resize
+                window.addEventListener('load', setDuration);
+                window.addEventListener('resize', setDuration);
+                // minor initial call
+                setTimeout(setDuration, 100);
+            })();
+            // --- end: configure discount marquee speed ---
 
             renderProducts();
             updateCartDisplay();
